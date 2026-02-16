@@ -1,0 +1,1 @@
+#MONGO_DB_URI=mongodb+srv://aktasonurcan420_db_user:12345@cluster0.xkfx0jl.mongodb.net/?appName=Cluster0

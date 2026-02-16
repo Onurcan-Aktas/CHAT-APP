@@ -1,0 +1,43 @@
+### Signup user POST /api/auth/signup //fullName,username,password,confirmPassword,gender
+POST http://localhost:5858/api/auth/signup
+Content-Type: application/json
+
+{
+    "fullName":"Onur aktas",
+    "username":"onur1",
+    "password":"123456",
+    "confirmPassword":"123456",
+    "gender":"male"
+}
+
+### Login user POST /api/auth/login //username,password
+POST http://localhost:5858/api/auth/login
+Content-Type: application/json
+
+{
+    "username":"minnosss_aktas",
+    "password":"123456"
+}
+
+### Logout user POST /api/auth/logout //username,password
+POST http://localhost:5858/api/auth/logout
+
+
+### message send  POST /api/auth/logout //username,password
+POST http://localhost:5858/api/messages/send/698f51661894cd6db0f59877
+Content-Type: application/json
+
+{
+    "message":"selamlar türkan"
+}
+
+
+### message send  POST /api/auth/logout //username,password
+GET  http://localhost:5858/api/users
+
+
+
+
+
+
+
