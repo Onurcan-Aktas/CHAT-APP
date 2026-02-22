@@ -1,6 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import GenderCheckbox from './GenderCheckBox.jsx';
+import useSignup from '../../hooks/useSignup.js';
 
 const SignUp = () => {
+
+    const [inputs,setInputs]=useState({
+        fullName:'',
+        username:'',
+        password:'',
+        confirmPassword:'',
+        gender:'',
+
+    })
+
+    const {loading,signup}=useSignup()
+
+    const handleCheckBoxChange=(gender)=>{
+        setInputs({...inputs,gender})
+    }
+
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+        await signup(inputs)
+
+    }
     return (
         <div className='flex flex-col items-center justify-center min-w-96 mx-auto font-sans'>
             <div className='w-full p-6 rounded-xl shadow-2xl bg-gray-900/60 bg-clip-padding backdrop-filter backdrop-blur-md border border-gray-100/10'>
@@ -9,15 +33,18 @@ const SignUp = () => {
                     <span className='text-amber-400 drop-shadow-md'> ChatApp</span>
                 </h1>
 
-                <form className='mt-6 space-y-4'>
+                <form onSubmit={handleSubmit} className='mt-6 space-y-4'>
                     <div>
                         <label className='label p-2'>
                             <span className='text-base label-text text-gray-300'>Full Name</span>
                         </label>
-                        <input 
-                            type='text' 
-                            placeholder='John Doe' 
-                            className='w-full input input-bordered h-10 bg-gray-800/50 border-gray-600 text-white placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors' 
+                        <input
+                            type='text'
+                            placeholder='John Doe'
+                            className='w-full input input-bordered h-10 bg-gray-800/50 border-gray-600 text-white 
+                            placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors'
+                            value={inputs.fullName}
+                            onChange={(e)=>setInputs({...inputs,fullName:e.target.value})}
                         />
                     </div>
 
@@ -25,10 +52,13 @@ const SignUp = () => {
                         <label className='label p-2'>
                             <span className='text-base label-text text-gray-300'>Username</span>
                         </label>
-                        <input 
-                            type='text' 
-                            placeholder='johndoe' 
-                            className='w-full input input-bordered h-10 bg-gray-800/50 border-gray-600 text-white placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors' 
+                        <input
+                            type='text'
+                            placeholder='johndoe'
+                            className='w-full input input-bordered h-10 bg-gray-800/50 border-gray-600 text-white 
+                            placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors'
+                            value={inputs.username}
+                            onChange={(e)=>setInputs({...inputs,username:e.target.value})}
                         />
                     </div>
 
@@ -39,7 +69,10 @@ const SignUp = () => {
                         <input
                             type='password'
                             placeholder='Enter Password'
-                            className='w-full input input-bordered h-10 bg-gray-800/50 border-gray-600 text-white placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors'
+                            className='w-full input input-bordered h-10 bg-gray-800/50 border-gray-600 text-white 
+                            placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors'
+                            value={inputs.password}
+                            onChange={(e)=>setInputs({...inputs,password:e.target.value})}
                         />
                     </div>
 
@@ -50,40 +83,24 @@ const SignUp = () => {
                         <input
                             type='password'
                             placeholder='Confirm Password'
-                            className='w-full input input-bordered h-10 bg-gray-800/50 border-gray-600 text-white placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors'
+                            className='w-full input input-bordered h-10 bg-gray-800/50 border-gray-600 text-white 
+                            placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors'
+                            value={inputs.confirmPassword}
+                            onChange={(e)=>setInputs({...inputs,confirmPassword:e.target.value})}
                         />
                     </div>
 
-                    {/* Gender Checkbox Alanı - Düzenlenmiş Hali */}
-                    <div className="px-2">
-                        <label className="label p-0 mb-2">
-                            <span className="text-base label-text text-gray-300">Gender</span>
-                        </label>
-                        <div className="flex gap-6">
-                            <div className="form-control">
-                                <label className="label cursor-pointer gap-2 justify-start">
-                                    <input type="checkbox" className="checkbox checkbox-sm checkbox-warning border-gray-500 checked:border-amber-500 [--chkbg:theme(colors.amber.500)] [--chkfg:theme(colors.gray.900)]" />
-                                    <span className="label-text text-gray-300">Male</span>
-                                </label>
-                            </div>
-                            <div className="form-control">
-                                <label className="label cursor-pointer gap-2 justify-start">
-                                    <input type="checkbox" className="checkbox checkbox-sm checkbox-warning border-gray-500 checked:border-amber-500 [--chkbg:theme(colors.amber.500)] [--chkfg:theme(colors.gray.900)]" />
-                                    <span className="label-text text-gray-300">Female</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <GenderCheckbox  onCheckBoxChange={handleCheckBoxChange} selectedGender={inputs.gender}/>
 
                     <div className="pt-2">
-                        <a href='#' className='text-sm text-gray-400 hover:underline hover:text-amber-400 inline-block transition-colors'>
+                        <Link to='/login' className='text-sm text-gray-400 hover:underline hover:text-amber-400 inline-block transition-colors'>
                             Already have an account?
-                        </a>
+                        </Link>
                     </div>
 
                     <div>
-                        <button className='btn btn-block btn-sm bg-amber-500 hover:bg-amber-600 text-gray-900 border-none font-bold transition-transform hover:scale-105 mt-2'>
-                            Sign Up
+                        <button className='btn btn-block btn-sm bg-amber-500 hover:bg-amber-600 text-gray-900 border-none font-bold transition-transform hover:scale-105 mt-2' disabled={loading}>
+                            {loading ? <span className='loading loading-spinner'></span>:"Sign Up"}
                         </button>
                     </div>
                 </form>
